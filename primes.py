@@ -3,6 +3,7 @@
 """This module is used for generating/testing primes."""
 
 import math
+import bisect
 
 INCREASE_LIST_CONSTANT = 10000 # we don't want to calculate new primes too often, so increase primes list by a fair amount
 
@@ -59,3 +60,12 @@ def is_prime(number, primes_list=list()):
 		if number%p == 0:
 			return False
 	return True
+
+def get_next_prime(current, primes_list=list()):
+	"""Give the prime that is just bigger than the given number."""
+	# increase list if needed
+	if len(primes_list) == 0 or current >= primes_list[-1]:
+		calc_new_primes(primes_list, current+INCREASE_LIST_CONSTANT)
+
+	index = bisect.bisect_right(primes_list, current) # find the index of the prime that is just bigger than current
+	return primes_list[index]
